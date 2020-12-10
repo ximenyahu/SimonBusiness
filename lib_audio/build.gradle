@@ -2,6 +2,12 @@ plugins {
     id 'com.android.library'
 }
 
+apply plugin: 'maven'
+
+def pomName = this.getName()
+def pomVersion = '1.0.0-SNAPSHOT'
+def pomDescription = 'the audio library for all projects'
+
 android {
     compileSdkVersion 28
 
@@ -29,4 +35,25 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.+'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_REPOSITORY_URL) {
+                authentication(userName: NEXUS_USERNAME,
+                        password: NEXUS_PASSWORD)
+            }
+
+            pom.project {
+                name pomName
+                version pomVersion
+                description pomDescription
+                artifactId pomVersion
+                groupId POM_GROUPID
+                packaging POM_PACKAGING
+            }
+        }
+
+    }
 }
